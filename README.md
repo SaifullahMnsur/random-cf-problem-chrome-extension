@@ -47,14 +47,14 @@ Check out the extension preview, screenshots, and download it at: [https://Saifu
 - `manifest.json`: Defines the extension’s configuration and permissions
 - `popup.html`: Structures and styles the popup interface
 - `popup.js`: Manages the extension’s functionality and API interaction
-- `icon16.png`, `icon48.png`, `icon128.png`: Extension icons (included in the repository)
+- `assets/icon16.png`, `assets/icon48.png`, `assets/icon128.png`: Extension icons (included in the repository)
 - `index.html`: GitHub Pages landing page with a download button and screenshots
-- `popup-ui.png`, `uses.png`: Static screenshots of the extension UI
+- `assets/popup-view.png`, `assets/usage.png`: Static screenshots of the extension UI
 
 ## Troubleshooting
 - **No problems found**: Widen your difficulty range or adjust tags—some combinations may yield no results
 - **Fetch errors**: Verify your internet connection and the Codeforces API’s availability
-- **Icons missing**: Ensure you’ve cloned or downloaded the full repository, as icons are included
+- **Icons missing**: Ensure you’ve cloned or downloaded the full repository, as icons are included in the `assets` folder
 
 ## Contributing
 We’d love your help to make this extension even better! Whether it’s adding new features, improving the UI, or fixing bugs, your contributions can have a real impact. Fork the repository, make your enhancements, and submit a pull request—every idea counts, and we’re excited to see what you bring to the table!
