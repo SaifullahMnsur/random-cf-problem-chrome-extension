@@ -21,7 +21,7 @@ This Chrome extension fetches a random problem from Codeforces based on a user-d
 2. **Load the Extension in Chrome**
    - Open Chrome and go to `chrome://extensions/`
    - Enable "Developer mode" (top-right toggle)
-   - Click "Load unpacked" and select the `CodeforcesRandomProblem` folder
+   - Click "Load unpacked" and select the `random-cf-problem-chrome-extension` folder
    - The extension will appear in your toolbar
 
 ## Usage
