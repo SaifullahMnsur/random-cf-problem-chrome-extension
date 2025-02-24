@@ -2,6 +2,9 @@
 
 This Chrome extension fetches a random problem from Codeforces based on a user-defined difficulty range and optional tags. It supports flexible filtering—either matching any of the selected tags (OR condition) or requiring an exact match (only the selected tags)—and automatically opens the chosen problem in a new tab.
 
+## Live Demo
+Check out the extension preview, screenshots, and download it at: [https://SaifullahMnsur.github.io/random-cf-problem-chrome-extension/](https://SaifullahMnsur.github.io/random-cf-problem-chrome-extension/)
+
 ## Features
 - Select a difficulty range (e.g., 800–3500)
 - Choose multiple tags from a dropdown
@@ -26,7 +29,7 @@ This Chrome extension fetches a random problem from Codeforces based on a user-d
 
 ## Usage
 1. Click the extension icon in the Chrome toolbar
-2. Adjust the difficulty range using the "Min" and "Max" fields
+2. Adjust the difficulty range using the "Min Difficulty" and "Max Difficulty" fields
 3. (Optional) Select tags from the dropdown
    - Tags appear as removable chips (click × to delete)
 4. Check "Exact tag match" for problems with only the selected tags, or leave unchecked for problems with any of the tags
@@ -36,7 +39,7 @@ This Chrome extension fetches a random problem from Codeforces based on a user-d
 ## Development
 - **API**: Utilizes the Codeforces API (`https://codeforces.com/api/problemset.problems`) to fetch problem data
 - **UI**: Designed with a modern, compact layout in `popup.html` using embedded CSS
-- **Logic**: Implemented in `popup.js` to handle API requests, filtering, and problem selection
+- **Logic**: Implemented in `popup.js` to handle API requests, filtering, and problem selection with context-aware behavior for both extension and standalone use
 - **Error Handling**: Includes checks for API failures and invalid user inputs
 - **Tech Stack**: Built with vanilla JavaScript, HTML, and CSS—no external frameworks
 
@@ -45,6 +48,8 @@ This Chrome extension fetches a random problem from Codeforces based on a user-d
 - `popup.html`: Structures and styles the popup interface
 - `popup.js`: Manages the extension’s functionality and API interaction
 - `icon16.png`, `icon48.png`, `icon128.png`: Extension icons (included in the repository)
+- `index.html`: GitHub Pages landing page with a download button and screenshots
+- `popup-ui.png`, `uses.png`: Static screenshots of the extension UI
 
 ## Troubleshooting
 - **No problems found**: Widen your difficulty range or adjust tags—some combinations may yield no results
@@ -52,7 +57,7 @@ This Chrome extension fetches a random problem from Codeforces based on a user-d
 - **Icons missing**: Ensure you’ve cloned or downloaded the full repository, as icons are included
 
 ## Contributing
-Fork the repository, enhance it, and submit a pull request—contributions are welcome!
+We’d love your help to make this extension even better! Whether it’s adding new features, improving the UI, or fixing bugs, your contributions can have a real impact. Fork the repository, make your enhancements, and submit a pull request—every idea counts, and we’re excited to see what you bring to the table!
 
 ## License
 This project is open-source and unlicensed—feel free to use or modify it as you see fit!

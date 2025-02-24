@@ -13,6 +13,18 @@ const apiUrl = 'https://codeforces.com/api/problemset.problems';
 
 let selectedTags = new Set();
 
+// Check if running as a Chrome extension
+const isChromeExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.tabs;
+
+// Function to open a problem URL based on context
+function openProblem(url) {
+    if (isChromeExtension) {
+        chrome.tabs.create({ url });
+    } else {
+        window.open(url, '_blank'); // Fallback for standalone
+    }
+}
+
 // Populate dropdown and handle tag selection
 document.addEventListener('DOMContentLoaded', () => {
     const dropdown = document.getElementById('tag-dropdown');
@@ -88,8 +100,8 @@ document.getElementById('generate').addEventListener('click', async () => {
             </a>
         `;
         
-        // Open the problem in a new tab
-        chrome.tabs.create({ url: problemUrl });
+        // Open the problem in a new tab based on context
+        openProblem(problemUrl);
     } catch (error) {
         console.error('Fetch error details:', error);
         resultDiv.innerHTML = `Error fetching problems: ${error.message}. Please try again.`;
