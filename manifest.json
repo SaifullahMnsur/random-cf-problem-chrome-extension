@@ -5,7 +5,8 @@
   "description": "Selects a random problem from Codeforces within a difficulty range",
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
     "https://codeforces.com/*"

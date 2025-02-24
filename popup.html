@@ -241,29 +241,6 @@
     <button id="generate">Get Problem</button>
     <div id="result"></div>
     <script src="popup.js"></script>
-    <script>
-        // Theme toggle functionality
-        const body = document.body;
-        const themeToggle = document.getElementById('theme-toggle');
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'dark') {
-            body.setAttribute('data-theme', 'dark');
-            themeToggle.checked = true;
-        } else {
-            body.setAttribute('data-theme', 'light');
-            themeToggle.checked = false;
-        }
-
-        themeToggle.addEventListener('change', () => {
-            if (themeToggle.checked) {
-                body.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    </script>
+    <script src="theme-toggle.js"></script>
 </body>
 </html>
