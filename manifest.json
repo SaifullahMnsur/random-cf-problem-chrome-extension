@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Codeforces Random Problem",
+    "name": "Random CF Problem",
     "version": "1.0",
     "description": "Selects a random problem from Codeforces within a difficulty range",
     "permissions": [
