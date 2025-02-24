@@ -1,24 +1,26 @@
 {
-    "manifest_version": 3,
-    "name": "Random CF Problem",
-    "version": "1.0",
-    "description": "Selects a random problem from Codeforces within a difficulty range",
-    "permissions": [
-      "activeTab",
-      "tabs",
-      "https://codeforces.com/*"
-    ],
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
-      }
-    },
-    "icons": {
+  "manifest_version": 3,
+  "name": "Random CF Problem",
+  "version": "1.0",
+  "description": "Selects a random problem from Codeforces within a difficulty range",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://codeforces.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
       "16": "icon16.png",
       "48": "icon48.png",
       "128": "icon128.png"
     }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   }
+}
