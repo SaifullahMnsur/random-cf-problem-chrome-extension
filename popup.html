@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Codeforces Problem Generator</title>
+    <style>
+        body {
+            width: 280px;
+            padding: 15px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            color: #333;
+        }
+        h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 13px;
+            background: #fff;
+        }
+        input[type="number"] {
+            appearance: textfield;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 0.5;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #selected-tags {
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            background: #ecf0f1;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #2c3e50;
+        }
+        .remove-tag {
+            cursor: pointer;
+            margin-left: 4px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .remove-tag:hover {
+            color: #e74c3c;
+        }
+        #result {
+            margin-top: 10px;
+            font-size: 13px;
+            word-wrap: break-word;
+        }
+        #result a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        #result a:hover {
+            text-decoration: underline;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        .checkbox-label input {
+            width: auto;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Codeforces Random</h3>
+    <label>Min Difficulty</label>
+    <input type="number" id="minRating" value="800">
+    <label>Max Difficulty</label>
+    <input type="number" id="maxRating" value="3500">
+    
+    <label>Tags</label>
+    <div id="selected-tags"></div>
+    <select id="tag-dropdown">
+        <option value="">Select a tag</option>
+    </select>
+    
+    <label class="checkbox-label">
+        <input type="checkbox" id="exact-match"> Exact tag match
+    </label>
+    
+    <button id="generate">Get Problem</button>
+    <div id="result"></div>
+    <script src="popup.js"></script>
+</body>
+</html>
