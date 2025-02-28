@@ -11,10 +11,12 @@ const availableTags = [
     "string suffix structures", "strings", "ternary search", "trees", "two pointers"
 ];
 
-const apiUrl = 'https://codeforces.com/api/problemset.problems';
-const extensionVersion = "1.5.0";
+const problemSetUrl = 'https://codeforces.com/api/problemset.problems';
+const contestListUrl = 'https://codeforces.com/api/contest.list';
+const extensionVersion = "2.0.0";
 
 let selectedTags = new Set();
+let contestTypeMap = null; // Cache for contest types
 
 // Check if running as a Chrome extension
 const isChromeExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.tabs;
@@ -76,12 +78,81 @@ function roundToHundred(value) {
     return Math.round(value / 100) * 100;
 }
 
+// Function to fetch and cache contest types
+async function fetchContestTypes() {
+    if (!isChromeExtension || !chrome.storage || !chrome.storage.local) {
+        // Fallback for non-extension environments (e.g., standalone index.html)
+        console.warn('chrome.storage.local unavailable, fetching contest types without caching');
+        const response = await fetch(contestListUrl);
+        if (!response.ok) throw new Error('Failed to fetch contest list');
+        const data = await response.json();
+        if (data.status !== "OK") throw new Error(`API error: ${data.comment}`);
+        const contestMap = {};
+        data.result.forEach(contest => {
+            const name = contest.name.toLowerCase();
+            let type = "other";
+            if (name.includes("div. 1")) type = "div1";
+            else if (name.includes("div. 2")) type = "div2";
+            else if (name.includes("div. 3")) type = "div3";
+            else if (name.includes("div. 4")) type = "div4";
+            else if (name.includes("educational")) type = "educational";
+            else if (name.includes("global")) type = "global";
+            contestMap[contest.id] = type;
+        });
+        return contestMap;
+    }
+
+    return new Promise((resolve) => {
+        chrome.storage.local.get(['contestTypes', 'lastFetch'], (result) => {
+            const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+            const now = Date.now();
+
+            if (result.contestTypes && result.lastFetch && (now - result.lastFetch < ONE_DAY_MS)) {
+                resolve(result.contestTypes);
+            } else {
+                fetch(contestListUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to fetch contest list');
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status !== "OK") throw new Error(`API error: ${data.comment}`);
+                        const contestMap = {};
+                        data.result.forEach(contest => {
+                            const name = contest.name.toLowerCase();
+                            let type = "other";
+                            if (name.includes("div. 1")) type = "div1";
+                            else if (name.includes("div. 2")) type = "div2";
+                            else if (name.includes("div. 3")) type = "div3";
+                            else if (name.includes("div. 4")) type = "div4";
+                            else if (name.includes("educational")) type = "educational";
+                            else if (name.includes("global")) type = "global";
+                            contestMap[contest.id] = type;
+                        });
+                        chrome.storage.local.set({ contestTypes: contestMap, lastFetch: now }, () => {
+                            resolve(contestMap);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching contest list:', error);
+                        resolve({}); // Fallback to empty map on error
+                    });
+            }
+        });
+    });
+}
+
 // Fetch problems from Codeforces API
-async function fetchProblems(minRating, maxRating, tags, exactMatch, unratedOnly) {
+async function fetchProblems(minRating, maxRating, tags, exactMatch, unratedOnly, contestType) {
     try {
+        // Fetch contest types if not cached
+        if (!contestTypeMap) {
+            contestTypeMap = await fetchContestTypes();
+        }
+
         const url = tags.length > 0 
-            ? `${apiUrl}?tags=${tags.join(';')}`
-            : apiUrl;
+            ? `${problemSetUrl}?tags=${tags.join(';')}`
+            : problemSetUrl;
         
         const response = await fetch(url);
         if (!response.ok) {
@@ -93,24 +164,39 @@ async function fetchProblems(minRating, maxRating, tags, exactMatch, unratedOnly
             throw new Error(`API error: ${data.comment}`);
         }
 
-        const problems = data.result.problems
+        let problems = data.result.problems
             .filter(problem => {
                 const rating = problem.rating || 0;
+                const problemContestType = contestTypeMap[problem.contestId] || "other";
+
+                // Unrated filter
                 if (unratedOnly) {
-                    return rating === 0; // Only unrated problems
-                } else {
-                    const withinRating = rating >= minRating && rating <= maxRating;
-                    if (!withinRating) return false;
+                    return rating === 0;
+                }
 
-                    if (tags.length === 0) return true;
+                // Rating filter
+                const withinRating = rating >= minRating && rating <= maxRating;
+                if (!withinRating) return false;
 
+                // Tag filter
+                if (tags.length > 0) {
                     if (exactMatch) {
-                        return problem.tags.length === tags.length &&
-                            problem.tags.every(tag => tags.includes(tag));
+                        if (problem.tags.length !== tags.length || !problem.tags.every(tag => tags.includes(tag))) {
+                            return false;
+                        }
                     } else {
-                        return problem.tags.some(tag => tags.includes(tag));
+                        if (!problem.tags.some(tag => tags.includes(tag))) {
+                            return false;
+                        }
                     }
                 }
+
+                // Contest type filter
+                if (contestType !== "any" && problemContestType !== contestType) {
+                    return false;
+                }
+
+                return true;
             });
 
         return problems.map(problem => ({
@@ -137,8 +223,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const minRatingInput = document.getElementById('minRating');
     const maxRatingInput = document.getElementById('maxRating');
     const unratedCheckbox = document.getElementById('unrated-only');
+    const contestTypeSelect = document.getElementById('contest-type');
 
-    if (!minRatingInput || !maxRatingInput || !unratedCheckbox) {
+    if (!minRatingInput || !maxRatingInput || !unratedCheckbox || !contestTypeSelect) {
         console.error('Required input elements not found');
         return;
     }
@@ -195,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tagsArray = Array.from(selectedTags);
         const exactMatch = document.getElementById('exact-match').checked;
         const unratedOnly = unratedCheckbox.checked;
+        const contestType = contestTypeSelect.value;
         
         const resultDiv = document.getElementById('result');
         if (!resultDiv) {
@@ -204,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultDiv.innerHTML = 'Loading...';
 
         try {
-            const problems = await fetchProblems(minRating, maxRating, tagsArray, exactMatch, unratedOnly);
+            const problems = await fetchProblems(minRating, maxRating, tagsArray, exactMatch, unratedOnly, contestType);
             if (problems.length === 0) {
                 resultDiv.innerHTML = 'No problems found with these criteria.';
                 return;

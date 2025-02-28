@@ -278,7 +278,7 @@
 
         .rating-field input {
             width: 100%;
-            margin-bottom: 0; /* Remove bottom margin since container handles spacing */
+            margin-bottom: 0;
         }
     </style>
 </head>
@@ -316,6 +316,17 @@
     <label class="checkbox-label">
         <input type="checkbox" id="exact-match"> Exact tag match
     </label>
+    
+    <label>Contest Type</label>
+    <select id="contest-type">
+        <option value="any">Any</option>
+        <option value="div1">Div. 1</option>
+        <option value="div2">Div. 2</option>
+        <option value="div3">Div. 3</option>
+        <option value="div4">Div. 4</option>
+        <option value="educational">Educational</option>
+        <option value="global">Global</option>
+    </select>
     
     <button id="generate">Get Problem</button>
     <div id="result"></div>

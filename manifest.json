@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Random CF Problem",
-  "version": "1.5.0",
-  "description": "Selects a random problem from Codeforces within a difficulty range",
+  "version": "2.0.0",
+  "description": "Selects a random problem from Codeforces with advanced filters",
   "permissions": [
     "activeTab",
     "tabs",
@@ -12,7 +12,8 @@
     "alarms"
   ],
   "host_permissions": [
-    "https://codeforces.com/*",
+    "https://codeforces.com/api/problemset.problems",
+    "https://codeforces.com/api/contest.list",
     "https://api.github.com/*"
   ],
   "action": {
