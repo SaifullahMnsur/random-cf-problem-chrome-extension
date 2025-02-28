@@ -63,7 +63,8 @@ We’d love your help to make this extension even better! Whether it’s adding 
 
 ## Roadmap
 - [x] Add dark mode with a slider toggle for a customizable look
-- [ ] Enhance UI with animations and additional styling
+- [x] Enhance UI with animations and additional styling (v1.5.0)
+- [x] Add auto-updater using GitHub releases (v1.5.0)
 - [ ] Expand filtering options (e.g., contest type, problem status)
 
 ## License

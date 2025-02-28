@@ -10,14 +10,15 @@
             --label-color: #666;
             --input-bg: #fff;
             --input-border: #ddd;
-            --button-bg: #3498db;
-            --button-hover: #2980b9;
+            --button-bg: linear-gradient(135deg, #3498db, #2980b9);
+            --button-hover: linear-gradient(135deg, #2980b9, #1f6691);
             --chip-bg: #ecf0f1;
             --chip-text: #2c3e50;
             --remove-tag: #7f8c8d;
             --remove-tag-hover: #e74c3c;
             --link-color: #3498db;
-            --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --glow: 0 0 8px rgba(52, 152, 219, 0.5);
         }
 
         /* Dark theme */
@@ -27,14 +28,15 @@
             --label-color: #a0a0a0;
             --input-bg: #2c3e50;
             --input-border: #3e4b5e;
-            --button-bg: #2980b9;
-            --button-hover: #1f6691;
+            --button-bg: linear-gradient(135deg, #2980b9, #1f6691);
+            --button-hover: linear-gradient(135deg, #1f6691, #145374);
             --chip-bg: #34495e;
             --chip-text: #e0e0e0;
             --remove-tag: #95a5a6;
             --remove-tag-hover: #e74c3c;
             --link-color: #66b0ff;
-            --shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 8px rgba(102, 176, 255, 0.5);
         }
 
         body {
@@ -44,14 +46,27 @@
             background: var(--bg-color);
             color: var(--text-color);
             margin: 0;
+            animation: fadeIn 0.3s ease-in;
             transition: background 0.3s, color 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         h3 {
             margin: 0 0 12px;
-            font-size: 20px;
+            font-size: 22px;
             color: var(--text-color);
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         label {
@@ -59,6 +74,8 @@
             color: var(--label-color);
             margin-bottom: 5px;
             display: block;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease-in;
         }
 
         input, select, button {
@@ -71,11 +88,13 @@
             font-size: 13px;
             background: var(--input-bg);
             color: var(--text-color);
-            transition: border-color 0.2s, background 0.3s;
+            transition: all 0.2s ease;
+            animation: fadeIn 0.6s ease-in;
         }
 
         input:focus, select:focus {
-            border-color: var(--button-bg);
+            border-color: var(--link-color);
+            box-shadow: var(--glow);
             outline: none;
         }
 
@@ -88,17 +107,37 @@
             opacity: 0.7;
         }
 
+        input[disabled] {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        [data-theme="dark"] input[disabled] {
+            background: #3a4a5e;
+            color: #777;
+        }
+
         button {
             background: var(--button-bg);
             color: white;
             border: none;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            animation: fadeIn 0.7s ease-in;
         }
 
         button:hover {
             background: var(--button-hover);
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         #selected-tags {
@@ -116,6 +155,12 @@
             font-size: 11px;
             color: var(--chip-text);
             box-shadow: var(--shadow);
+            animation: chipPop 0.2s ease-out;
+        }
+
+        @keyframes chipPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .remove-tag {
@@ -123,27 +168,30 @@
             margin-left: 6px;
             color: var(--remove-tag);
             font-size: 14px;
-            transition: color 0.2s;
+            transition: color 0.2s, transform 0.2s;
         }
 
         .remove-tag:hover {
             color: var(--remove-tag-hover);
+            transform: scale(1.2);
         }
 
         #result {
             margin-top: 12px;
             font-size: 13px;
             word-wrap: break-word;
+            animation: fadeIn 0.3s ease-in;
         }
 
         #result a {
             color: var(--link-color);
             text-decoration: none;
-            transition: text-decoration 0.2s;
+            transition: text-decoration 0.2s, color 0.2s;
         }
 
         #result a:hover {
             text-decoration: underline;
+            color: var(--button-hover);
         }
 
         .checkbox-label {
@@ -152,6 +200,7 @@
             margin-bottom: 12px;
             font-size: 12px;
             color: var(--label-color);
+            animation: fadeIn 0.5s ease-in;
         }
 
         .checkbox-label input {
@@ -164,6 +213,7 @@
             align-items: center;
             justify-content: flex-end;
             margin-bottom: 12px;
+            animation: fadeIn 0.4s ease-in;
         }
 
         .theme-switch {
@@ -187,7 +237,7 @@
             right: 0;
             bottom: 0;
             background-color: var(--input-border);
-            transition: 0.3s;
+            transition: background-color 0.3s;
             border-radius: 20px;
         }
 
@@ -199,16 +249,36 @@
             left: 2px;
             bottom: 2px;
             background-color: var(--input-bg);
-            transition: 0.3s;
+            transition: transform 0.3s;
             border-radius: 50%;
         }
 
         input:checked + .slider {
-            background-color: var(--button-bg);
+            background-color: var(--link-color);
         }
 
         input:checked + .slider:before {
             transform: translateX(20px);
+        }
+
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .rating-field {
+            flex: 1;
+        }
+
+        .rating-field label {
+            margin-bottom: 5px;
+        }
+
+        .rating-field input {
+            width: 100%;
+            margin-bottom: 0; /* Remove bottom margin since container handles spacing */
         }
     </style>
 </head>
@@ -223,10 +293,19 @@
         </label>
     </div>
     <h3>Random CF Problem</h3>
-    <label>Min Difficulty</label>
-    <input type="number" id="minRating" value="800">
-    <label>Max Difficulty</label>
-    <input type="number" id="maxRating" value="3500">
+    <label class="checkbox-label">
+        <input type="checkbox" id="unrated-only"> Unrated Problems Only
+    </label>
+    <div class="rating-container">
+        <div class="rating-field">
+            <label for="minRating">Min Difficulty</label>
+            <input type="number" id="minRating" value="800" step="100" min="800" max="3500">
+        </div>
+        <div class="rating-field">
+            <label for="maxRating">Max Difficulty</label>
+            <input type="number" id="maxRating" value="3500" step="100" min="800" max="3500">
+        </div>
+    </div>
     
     <label>Tags</label>
     <div id="selected-tags"></div>
